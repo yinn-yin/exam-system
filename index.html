@@ -1,0 +1,4983 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXAMHUB - Online Examination Management System</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:"Century Gothic",Arial,sans-serif;
+}
+
+body{
+    background:#f3f6fb;
+    color:#1e293b;
+}
+
+button,input,select,textarea{
+    font-family:inherit;
+}
+
+.login-page{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f172a,#2563eb);
+}
+
+.login-box{
+    width:460px;
+    background:white;
+    border-radius:18px;
+    padding:40px;
+    box-shadow:0 20px 50px rgba(0,0,0,.25);
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo h1{
+    color:#2563eb;
+    font-size:32px;
+    font-weight:800;
+}
+
+.logo p{
+    color:#64748b;
+    margin-top:5px;
+}
+
+.role-buttons{
+    display:flex;
+    gap:10px;
+    margin-bottom:25px;
+}
+
+.role-buttons button{
+    flex:1;
+    padding:13px;
+    border:1px solid #cbd5e1;
+    background:white;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.role-buttons button.active{
+    background:#2563eb;
+    color:white;
+    border-color:#2563eb;
+}
+
+.form-group{
+    margin-bottom:17px;
+}
+
+.form-group label,
+.input-group label{
+    display:block;
+    margin-bottom:7px;
+    font-weight:bold;
+    color:#334155;
+}
+
+.form-group input,
+.form-group select,
+.input-group input,
+.input-group select,
+.input-group textarea{
+    width:100%;
+    padding:13px;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+    outline:none;
+    background:white;
+}
+
+.login-button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.login-button:hover,
+.btn:hover{
+    background:#1d4ed8;
+}
+
+.system{
+    display:none;
+}
+
+.sidebar{
+    width:245px;
+    height:100vh;
+    background:#0f172a;
+    position:fixed;
+    left:0;
+    top:0;
+    color:white;
+    overflow-y:auto;
+}
+
+.sidebar-logo{
+    padding:28px 22px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.sidebar-logo h2{
+    color:#60a5fa;
+    font-size:25px;
+}
+
+.sidebar-logo p{
+    font-size:12px;
+    color:#94a3b8;
+    margin-top:5px;
+}
+
+.sidebar-menu{
+    list-style:none;
+    padding:18px 12px;
+}
+
+.sidebar-menu li{
+    margin-bottom:6px;
+}
+
+.sidebar-menu button{
+    width:100%;
+    padding:13px 15px;
+    background:transparent;
+    border:none;
+    color:#cbd5e1;
+    text-align:left;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.sidebar-menu button:hover{
+    background:#2563eb;
+    color:white;
+}
+
+.main{
+    margin-left:245px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:75px;
+    background:white;
+    border-bottom:1px solid #e2e8f0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 30px;
+}
+
+.topbar h2{
+    font-size:22px;
+}
+
+.user-info{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.user-avatar{
+    width:38px;
+    height:38px;
+    background:#2563eb;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-weight:bold;
+}
+
+.content{
+    padding:30px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.page-title{
+    margin-bottom:25px;
+}
+
+.page-title h1{
+    font-size:28px;
+    margin-bottom:5px;
+}
+
+.page-title p{
+    color:#64748b;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:white;
+    padding:23px;
+    border-radius:12px;
+    border:1px solid #e2e8f0;
+}
+
+.card-title{
+    color:#64748b;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+.card-value{
+    font-size:30px;
+    font-weight:bold;
+}
+
+.card-icon{
+    font-size:25px;
+    float:right;
+}
+
+.content-box{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    padding:25px;
+    margin-bottom:25px;
+}
+
+.content-box h3{
+    margin-bottom:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th{
+    background:#f8fafc;
+    color:#475569;
+    font-size:13px;
+    text-align:left;
+    padding:14px;
+    border-bottom:1px solid #e2e8f0;
+    white-space:nowrap;
+}
+
+table td{
+    padding:14px;
+    border-bottom:1px solid #e2e8f0;
+    font-size:14px;
+}
+
+table tr:hover{
+    background:#f8fafc;
+}
+
+.btn{
+    border:none;
+    background:#2563eb;
+    color:white;
+    padding:11px 17px;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn-danger{
+    background:#dc2626;
+}
+
+.btn-success{
+    background:#16a34a;
+}
+
+.btn-warning{
+    background:#d97706;
+}
+
+.btn-secondary{
+    background:#64748b;
+}
+
+.status{
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.green{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.red{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+.yellow{
+    background:#fef3c7;
+    color:#a16207;
+}
+
+.blue{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.input-group{
+    margin-bottom:5px;
+}
+
+.input-group textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.empty-state{
+    text-align:center;
+    padding:35px;
+    color:#64748b;
+}
+
+.empty-icon{
+    font-size:40px;
+    margin-bottom:10px;
+}
+
+.top-students{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.top-student{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    padding:25px;
+    text-align:center;
+}
+
+.rank-number{
+    font-size:35px;
+    font-weight:bold;
+    color:#2563eb;
+    margin-bottom:10px;
+}
+
+.student-avatar-large{
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    background:#dbeafe;
+    color:#2563eb;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    font-size:20px;
+    margin-bottom:12px;
+}
+
+.exam-card{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    padding:25px;
+    margin-bottom:20px;
+}
+
+.exam-card h2{
+    color:#1e40af;
+    margin-bottom:10px;
+}
+
+.exam-info-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin:20px 0;
+}
+
+.exam-info{
+    background:#f8fafc;
+    padding:15px;
+    border-radius:8px;
+}
+
+.exam-info span{
+    display:block;
+    color:#64748b;
+    font-size:12px;
+    margin-bottom:5px;
+}
+
+.exam-info strong{
+    font-size:15px;
+}
+
+.question-card{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    padding:25px;
+    margin-bottom:18px;
+}
+
+.question-number{
+    color:#2563eb;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.question-text{
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:18px;
+}
+
+.choice{
+    display:block;
+    border:1px solid #cbd5e1;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:8px;
+    cursor:pointer;
+}
+
+.choice:hover{
+    background:#eff6ff;
+}
+
+.choice input{
+    margin-right:8px;
+}
+
+.schedule-note{
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    color:#1d4ed8;
+    padding:14px;
+    border-radius:8px;
+    margin-bottom:20px;
+}
+
+@media(max-width:1000px){
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .exam-info-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:700px){
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .cards,
+    .form-grid,
+    .top-students,
+    .exam-info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .login-box{
+        width:90%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginPage" class="login-page">
+    <div class="login-box">
+
+        <div class="logo">
+            <h1>EXAMHUB</h1>
+            <p>Online Examination Management System</p>
+        </div>
+
+        <div class="role-buttons">
+            <button id="studentRoleBtn"
+                    class="active"
+                    onclick="selectRole('Student')">
+                STUDENT
+            </button>
+
+            <button id="adminRoleBtn"
+                    onclick="selectRole('Admin')">
+                ADMIN
+            </button>
+        </div>
+
+        <div id="studentLogin">
+
+            <div class="form-group">
+                <label>Student ID</label>
+                <input type="text"
+                       id="studentID"
+                       placeholder="Enter Student ID">
+            </div>
+
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text"
+                       id="studentName"
+                       placeholder="Enter Full Name">
+            </div>
+
+            <div class="form-group">
+                <label>Course</label>
+                <select id="studentCourse">
+                    <option value="">Select Course</option>
+                    <option value="BSIT">BSIT</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Year Level</label>
+                <select id="studentYear">
+                    <option value="">Select Year Level</option>
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                    <option value="4th Year">4th Year</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div id="adminLogin" style="display:none;">
+
+            <div class="form-group">
+                <label>Admin Name</label>
+                <input type="text"
+                       id="adminName"
+                       placeholder="Enter Admin Name">
+            </div>
+
+            <div class="form-group">
+                <label>Subject</label>
+                <select id="adminSubject">
+                    <option>All Subjects</option>
+                </select>
+            </div>
+
+        </div>
+
+        <button class="login-button"
+                onclick="login()">
+            LOGIN
+        </button>
+
+    </div>
+</div>
+
+
+<!-- SYSTEM -->
+<div id="system" class="system">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <h2>EXAMHUB</h2>
+            <p>Online Examination System</p>
+        </div>
+
+        <!-- ADMIN MENU -->
+        <ul id="adminMenu"
+            class="sidebar-menu"
+            style="display:none;">
+
+            <li>
+                <button onclick="showPage('adminDashboard')">
+                    📊 Dashboard
+                </button>
+            </li>
+
+            <li>
+                <button onclick="showPage('usersPage')">
+                    👥 Users
+                </button>
+            </li>
+
+            <li>
+                <button onclick="showPage('examsPage')">
+                    📝 Exams
+                </button>
+            </li>
+
+            <li>
+                <button onclick="showPage('questionsPage')">
+                    ❓ Questions
+                </button>
+            </li>
+
+            <li>
+                <button onclick="showPage('monitorPage')">
+                    📺 Monitor
+                </button>
+            </li>
+
+            <li>
+                <button onclick="showPage('leaderboardPage')">
+                    🏆 Leaderboard
+                </button>
+            </li>
+
+            <li>
+                <button onclick="showPage('reportsPage')">
+                    📈 Reports
+                </button>
+            </li>
+
+            <li>
+                <button onclick="logout()">
+                    🚪 Logout
+                </button>
+            </li>
+
+        </ul>
+
+
+        <!-- STUDENT MENU -->
+        <ul id="studentMenu"
+            class="sidebar-menu">
+
+            <li>
+                <button onclick="showPage('studentDashboard')">
+                    🏠 Home
+                </button>
+            </li>
+
+            <li>
+                <button onclick="showPage('ongoingExam')">
+                    📝 Ongoing Exam
+                </button>
+            </li>
+
+            <li>
+                <button onclick="showPage('completedExams')">
+                    ✅ Exam Completed
+                </button>
+            </li>
+
+            <li>
+                <button onclick="showPage('examSchedule')">
+                    📅 Exam Schedule
+                </button>
+            </li>
+
+            <li>
+                <button onclick="showPage('examResults')">
+                    📊 Exam Result
+                </button>
+            </li>
+
+            <li>
+                <button onclick="logout()">
+                    🚪 Logout
+                </button>
+            </li>
+
+        </ul>
+
+
+    </aside>
+
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <h2 id="topbarTitle">
+                Dashboard
+            </h2>
+
+            <div class="user-info">
+                <strong id="loggedUser">Guest</strong>
+
+                <div class="user-avatar"
+                     id="userAvatar">
+                    U
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="content">
+
+
+            <!-- ADMIN DASHBOARD -->
+            <section id="adminDashboard" class="page">
+
+                <div class="page-title">
+                    <h1>Admin Dashboard</h1>
+                    <p>
+                        Manage examinations and monitor student performance.
+                    </p>
+                </div>
+
+                <div class="cards">
+
+                    <div class="card">
+                        <span class="card-icon">👨‍🎓</span>
+                        <div class="card-title">Total Students</div>
+                        <div class="card-value">150</div>
+                    </div>
+
+                    <div class="card">
+                        <span class="card-icon">📝</span>
+                        <div class="card-title">Total Exams</div>
+                        <div class="card-value" id="totalExams">0</div>
+                    </div>
+
+                    <div class="card">
+                        <span class="card-icon">🟢</span>
+                        <div class="card-title">Online Students</div>
+                        <div class="card-value">25</div>
+                    </div>
+
+                    <div class="card">
+                        <span class="card-icon">📚</span>
+                        <div class="card-title">Open Examination</div>
+                        <div class="card-value" id="activeExamCount">0</div>
+                    </div>
+
+                </div>
+
+
+                <div class="content-box">
+
+                    <h3>Recent Activity</h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Activity</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>Maria Dela Cruz</td>
+                                <td>Logged in</td>
+                                <td>10 minutes ago</td>
+                            </tr>
+
+                            <tr>
+                                <td>Juan Dela Cruz</td>
+                                <td>Started Examination</td>
+                                <td>15 minutes ago</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+                <div class="content-box">
+
+                    <h3>Examination Schedule Overview</h3>
+
+                    <div id="dashboardActiveExam"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- USERS -->
+            <section id="usersPage" class="page">
+
+                <div class="page-title">
+                    <h1>Users</h1>
+                    <p>Manage registered users.</p>
+                </div>
+
+                <div class="content-box">
+
+                    <h3>User List</h3>
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Course</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>2026001</td>
+                                <td>Maria Dela Cruz</td>
+                                <td>Student</td>
+                                <td>BSIT</td>
+                                <td>
+                                    <span class="status green">
+                                        ACTIVE
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>ADMIN001</td>
+                                <td>Administrator</td>
+                                <td>Admin</td>
+                                <td>All Subjects</td>
+                                <td>
+                                    <span class="status green">
+                                        ACTIVE
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- EXAMS -->
+            <section id="examsPage" class="page">
+
+                <div class="page-title">
+
+                    <h1>Exams</h1>
+
+                    <p>
+                        Create examinations for specific year levels,
+                        subjects and schedules.
+                    </p>
+
+                </div>
+
+
+                <div class="content-box">
+
+                    <h3>Create Examination</h3>
+
+                    <div class="form-grid">
+
+                        <div class="input-group">
+                            <label>Exam Title</label>
+
+                            <input
+                                type="text"
+                                id="examTitle"
+                                placeholder="Example: Prelim Examination">
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>Year Level</label>
+
+                            <select id="examYear"
+                                    onchange="updateAdminSubjects()">
+
+                                <option value="">
+                                    Select Year Level
+                                </option>
+
+                                <option value="1st Year">
+                                    1st Year
+                                </option>
+
+                                <option value="2nd Year">
+                                    2nd Year
+                                </option>
+
+                                <option value="3rd Year">
+                                    3rd Year
+                                </option>
+
+                                <option value="4th Year">
+                                    4th Year
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>Subject</label>
+
+                            <select id="examSubject">
+
+                                <option value="">
+                                    Select Year Level First
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>Duration</label>
+
+                            <input
+                                type="number"
+                                id="examDuration"
+                                placeholder="Minutes"
+                                min="1">
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>Passing Score</label>
+
+                            <input
+                                type="number"
+                                id="passingScore"
+                                placeholder="Example: 15"
+                                min="0">
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>Number of Items</label>
+
+                            <input
+                                type="number"
+                                id="numberOfItems"
+                                placeholder="Example: 20"
+                                min="1">
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>Exam Date</label>
+
+                            <input
+                                type="date"
+                                id="examDate">
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>Start Time</label>
+
+                            <input
+                                type="time"
+                                id="examStartTime">
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>End Time</label>
+
+                            <input
+                                type="time"
+                                id="examEndTime">
+
+                        </div>
+
+                    </div>
+
+
+                    <div style="
+                        margin-top:20px;
+                        padding:14px;
+                        background:#f8fafc;
+                        border-radius:8px;
+                        color:#64748b;
+                    ">
+
+                        <strong>Schedule:</strong>
+                        Students can only open the examination
+                        during the scheduled date and time.
+                        After the end time, the examination will
+                        automatically be closed.
+
+                    </div>
+
+
+                    <div style="
+                        display:flex;
+                        justify-content:flex-end;
+                        margin-top:20px;
+                    ">
+
+                        <button class="btn"
+                                onclick="createExam()">
+
+                            CREATE EXAMINATION
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="content-box">
+
+                    <h3>Examination List</h3>
+
+                    <div style="overflow-x:auto;">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Exam Title</th>
+                                    <th>Year</th>
+                                    <th>Subject</th>
+                                    <th>Date</th>
+                                    <th>Day</th>
+                                    <th>Time</th>
+                                    <th>Duration</th>
+                                    <th>Items</th>
+                                    <th>Passing</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="examTableBody"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- QUESTIONS -->
+            <section id="questionsPage" class="page">
+
+                <div class="page-title">
+
+                    <h1>Questions</h1>
+
+                    <p>
+                        Add questions to your examinations.
+                    </p>
+
+                </div>
+
+
+                <div class="content-box">
+
+                    <h3>Add Question</h3>
+
+                    <div class="form-grid">
+
+                        <div class="input-group">
+
+                            <label>Examination</label>
+
+                            <select id="questionExam"
+                                    onchange="showQuestionCount()">
+
+                                <option value="">
+                                    Select Examination
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>Questions Added</label>
+
+                            <input
+                                type="text"
+                                id="questionCountDisplay"
+                                value="0 / 0"
+                                readonly>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-group"
+                         style="margin-top:20px;">
+
+                        <label>Question</label>
+
+                        <textarea
+                            id="questionText"
+                            placeholder="Enter your question"></textarea>
+
+                    </div>
+
+
+                    <div class="form-grid"
+                         style="margin-top:20px;">
+
+                        <div class="input-group">
+                            <label>Choice A</label>
+                            <input
+                                type="text"
+                                id="choiceA"
+                                placeholder="Choice A">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Choice B</label>
+                            <input
+                                type="text"
+                                id="choiceB"
+                                placeholder="Choice B">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Choice C</label>
+                            <input
+                                type="text"
+                                id="choiceC"
+                                placeholder="Choice C">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Choice D</label>
+                            <input
+                                type="text"
+                                id="choiceD"
+                                placeholder="Choice D">
+                        </div>
+
+                        <div class="input-group">
+
+                            <label>Correct Answer</label>
+
+                            <select id="correctAnswer">
+
+                                <option value="">
+                                    Select Answer
+                                </option>
+
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div style="margin-top:20px;">
+
+                        <button class="btn"
+                                onclick="saveQuestion()">
+
+                            ADD QUESTION
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="content-box">
+
+                    <h3>Question List</h3>
+
+                    <div style="overflow-x:auto;">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Exam</th>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                    <th>Action</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="questionTableBody"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- MONITOR -->
+            <section id="monitorPage" class="page">
+
+                <div class="page-title">
+
+                    <h1>Monitor</h1>
+
+                    <p>
+                        Monitor student examination performance.
+                    </p>
+
+                </div>
+
+
+                <div class="content-box">
+
+                    <h3>Examination Monitoring</h3>
+
+                    <div style="overflow-x:auto;">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Student ID</th>
+                                    <th>Year</th>
+                                    <th>Exam</th>
+                                    <th>Subject</th>
+                                    <th>Score</th>
+                                    <th>Percentage</th>
+                                    <th>Remarks</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="monitorTableBody"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- LEADERBOARD -->
+            <section id="leaderboardPage" class="page">
+
+                <div class="page-title">
+
+                    <h1>Leaderboard</h1>
+
+                    <p>
+                        Top performing students.
+                    </p>
+
+                </div>
+
+
+                <div class="top-students">
+
+                    <div class="top-student"
+                         id="topStudent1"></div>
+
+                    <div class="top-student"
+                         id="topStudent2"></div>
+
+                    <div class="top-student"
+                         id="topStudent3"></div>
+
+                </div>
+
+
+                <div class="content-box">
+
+                    <h3>Top Students</h3>
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Rank</th>
+                                <th>Student Name</th>
+                                <th>Score</th>
+                                <th>Percentage</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="leaderboardTableBody"></tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- REPORTS -->
+            <section id="reportsPage" class="page">
+
+                <div class="page-title">
+
+                    <h1>Reports</h1>
+
+                    <p>
+                        Student examination performance reports.
+                    </p>
+
+                </div>
+
+
+                <div class="content-box">
+
+                    <h3>Examination Reports</h3>
+
+                    <div style="overflow-x:auto;">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Exam Type</th>
+                                    <th>Subject</th>
+                                    <th>Score</th>
+                                    <th>Percentage</th>
+                                    <th>Remarks</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="reportsTableBody"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- STUDENT DASHBOARD -->
+            <section id="studentDashboard" class="page">
+
+                <div class="page-title">
+
+                    <h1>
+                        Welcome,
+                        <span id="studentWelcomeName">
+                            Student
+                        </span>
+                    </h1>
+
+                    <p>
+                        Here is your examination overview.
+                    </p>
+
+                </div>
+
+
+                <div class="cards">
+
+                    <div class="card">
+                        <span class="card-icon">📝</span>
+                        <div class="card-title">Ongoing Exam</div>
+                        <div class="card-value"
+                             id="studentOngoingCount">
+                            0
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <span class="card-icon">✅</span>
+                        <div class="card-title">Exam Completed</div>
+                        <div class="card-value"
+                             id="studentCompletedCount">
+                            0
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <span class="card-icon">📅</span>
+                        <div class="card-title">Upcoming Exams</div>
+                        <div class="card-value"
+                             id="studentUpcomingCount">
+                            0
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <span class="card-icon">📊</span>
+                        <div class="card-title">Results</div>
+                        <div class="card-value"
+                             id="studentResultCount">
+                            0
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="content-box">
+
+                    <h3>Student Information</h3>
+
+                    <table>
+
+                        <tr>
+                            <th>Student ID</th>
+                            <td id="infoStudentID">—</td>
+                        </tr>
+
+                        <tr>
+                            <th>Full Name</th>
+                            <td id="infoStudentName">—</td>
+                        </tr>
+
+                        <tr>
+                            <th>Course</th>
+                            <td id="infoStudentCourse">BSIT</td>
+                        </tr>
+
+                        <tr>
+                            <th>Year Level</th>
+                            <td id="infoStudentYear">—</td>
+                        </tr>
+
+                    </table>
+
+                </div>
+
+
+                <div class="content-box">
+
+                    <h3>
+                        Available Examination for
+                        <span id="dashboardStudentYear"></span>
+                    </h3>
+
+                    <div id="studentDashboardExams"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ONGOING -->
+            <section id="ongoingExam" class="page">
+
+                <div class="page-title">
+
+                    <h1>Ongoing Exam</h1>
+
+                    <p>
+                        Examination available for your year level.
+                    </p>
+
+                </div>
+
+                <div id="ongoingExamContainer"></div>
+
+            </section>
+
+
+            <!-- COMPLETED -->
+            <section id="completedExams" class="page">
+
+                <div class="page-title">
+
+                    <h1>Exam Completed</h1>
+
+                    <p>
+                        Your completed examinations.
+                    </p>
+
+                </div>
+
+
+                <div class="content-box">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Exam</th>
+                                <th>Subject</th>
+                                <th>Score</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="completedExamBody"></tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- SCHEDULE -->
+            <section id="examSchedule" class="page">
+
+                <div class="page-title">
+
+                    <h1>Exam Schedule</h1>
+
+                    <p id="scheduleDescription">
+                        Examination Schedule
+                    </p>
+
+                </div>
+
+
+                <div class="schedule-note">
+
+                    📅 You are viewing the examination schedule
+                    for your current year level only.
+
+                    <strong id="scheduleYearLabel"></strong>
+
+                </div>
+
+
+                <div class="content-box">
+
+                    <div style="overflow-x:auto;">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Exam</th>
+                                    <th>Subject</th>
+                                    <th>Year</th>
+                                    <th>Date</th>
+                                    <th>Day</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Status</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="scheduleTableBody"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- RESULTS -->
+            <section id="examResults" class="page">
+
+                <div class="page-title">
+
+                    <h1>Exam Result</h1>
+
+                    <p>
+                        Your examination results.
+                    </p>
+
+                </div>
+
+
+                <div class="content-box">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Exam</th>
+                                <th>Subject</th>
+                                <th>Score</th>
+                                <th>Percentage</th>
+                                <th>Remarks</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="studentResultBody"></tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- TAKE EXAM -->
+            <section id="takeExamPage" class="page">
+
+                <div class="page-title">
+
+                    <h1 id="takeExamTitle">
+                        Examination
+                    </h1>
+
+                    <p id="takeExamDescription">
+                        Answer all questions.
+                    </p>
+
+                </div>
+
+
+                <div id="questionsContainer"></div>
+
+
+                <div style="
+                    display:flex;
+                    justify-content:flex-end;
+                    margin-top:20px;
+                ">
+
+                    <button class="btn btn-success"
+                            onclick="submitExam()">
+
+                        SUBMIT EXAM
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+/* ========================================================= */
+/* DATA */
+/* ========================================================= */
+
+let currentRole = "Student";
+
+let exams = [];
+
+let questions = [];
+
+let results = [];
+
+let currentStudent = {};
+
+let currentExamIndex = -1;
+
+
+/* ========================================================= */
+/* SUBJECTS */
+/* ========================================================= */
+
+const yearSubjects = {
+
+    "1st Year":[
+        "Computer Programming 2",
+        "Discrete Math",
+        "Introduction to Human Computer Interaction",
+        "Art Ed",
+        "Understanding the Self",
+        "Theo 2",
+        "PE 2",
+        "NSTP"
+    ],
+
+    "2nd Year":[
+        "IT Elective 2",
+        "PE 3",
+        "Multimedia",
+        "Fil 1",
+        "Ethics",
+        "Soc 6",
+        "Theo 3",
+        "Data Structure",
+        "Elective 1"
+    ],
+
+    "3rd Year":[
+        "ITPC312",
+        "ITPT315",
+        "Phil Lit",
+        "ITPT313",
+        "F Elec 1",
+        "ITPC311",
+        "ITPT314",
+        "F Elec 2"
+    ],
+
+    "4th Year":[
+        "System Architecture and Integration 2",
+        "System Administration",
+        "Capstone"
+    ]
+
+};
+
+
+/* ========================================================= */
+/* DEFAULT EXAM */
+/* ========================================================= */
+
+function addTechnologyExam(){
+
+    if(exams.length>0){
+        return;
+    }
+
+    exams.push({
+
+        title:"Technology Fundamentals",
+
+        year:"3rd Year",
+
+        subject:"ITPC312",
+
+        duration:60,
+
+        passingScore:15,
+
+        items:20,
+
+        status:"ACTIVE",
+
+        examDate:"2026-09-17",
+
+        startTime:"09:00",
+
+        endTime:"10:00",
+
+        adminOpened:false
+
+    });
+
+
+    questions.push(
+
+        {
+            examIndex:0,
+            question:"What does CPU stand for?",
+            A:"Central Processing Unit",
+            B:"Computer Personal Unit",
+            C:"Central Program Utility",
+            D:"Computer Processing Utility",
+            answer:"A"
+        },
+
+        {
+            examIndex:0,
+            question:"Which component is primarily responsible for temporarily storing data while a computer is running?",
+            A:"SSD",
+            B:"RAM",
+            C:"HDD",
+            D:"ROM",
+            answer:"B"
+        },
+
+        {
+            examIndex:0,
+            question:"What does HTML stand for?",
+            A:"HyperText Markup Language",
+            B:"HighText Machine Language",
+            C:"Hyperlink Text Management Language",
+            D:"Home Tool Markup Language",
+            answer:"A"
+        },
+
+        {
+            examIndex:0,
+            question:"Which of the following is an operating system?",
+            A:"Google Chrome",
+            B:"Microsoft Word",
+            C:"Windows",
+            D:"Adobe Photoshop",
+            answer:"C"
+        },
+
+        {
+            examIndex:0,
+            question:"What is the main purpose of a database?",
+            A:"To edit photos",
+            B:"To store and organize data",
+            C:"To browse websites",
+            D:"To create animations",
+            answer:"B"
+        },
+
+        {
+            examIndex:0,
+            question:"What does SQL stand for?",
+            A:"Structured Query Language",
+            B:"System Query Logic",
+            C:"Simple Question Language",
+            D:"Structured Question List",
+            answer:"A"
+        },
+
+        {
+            examIndex:0,
+            question:"Which device is commonly used to connect a computer to a network?",
+            A:"Network Interface Card",
+            B:"Monitor",
+            C:"Keyboard",
+            D:"Speaker",
+            answer:"A"
+        },
+
+        {
+            examIndex:0,
+            question:"What is phishing?",
+            A:"A method of improving internet speed",
+            B:"A cyberattack that tricks users into revealing information",
+            C:"A way to compress files",
+            D:"A programming technique",
+            answer:"B"
+        },
+
+        {
+            examIndex:0,
+            question:"Which protocol is commonly used for secure websites?",
+            A:"HTTP",
+            B:"FTP",
+            C:"HTTPS",
+            D:"SMTP",
+            answer:"C"
+        },
+
+        {
+            examIndex:0,
+            question:"What is an IP address used for?",
+            A:"Identifying a device on a network",
+            B:"Increasing computer memory",
+            C:"Creating passwords",
+            D:"Installing applications",
+            answer:"A"
+        },
+
+        {
+            examIndex:0,
+            question:"What is a firewall?",
+            A:"A physical computer component",
+            B:"A security system that monitors network traffic",
+            C:"A type of programming language",
+            D:"A file compression tool",
+            answer:"B"
+        },
+
+        {
+            examIndex:0,
+            question:"Which of the following is a programming language?",
+            A:"Python",
+            B:"Windows",
+            C:"Google",
+            D:"Wi-Fi",
+            answer:"A"
+        },
+
+        {
+            examIndex:0,
+            question:"What is cloud computing?",
+            A:"Storing and accessing computing resources over the internet",
+            B:"Repairing computers during bad weather",
+            C:"Creating computer graphics",
+            D:"Installing an operating system",
+            answer:"A"
+        },
+
+        {
+            examIndex:0,
+            question:"Which is an example of an input device?",
+            A:"Monitor",
+            B:"Printer",
+            C:"Keyboard",
+            D:"Speaker",
+            answer:"C"
+        },
+
+        {
+            examIndex:0,
+            question:"What is an algorithm?",
+            A:"A computer virus",
+            B:"A step-by-step procedure for solving a problem",
+            C:"A hardware component",
+            D:"A type of database",
+            answer:"B"
+        },
+
+        {
+            examIndex:0,
+            question:"What is the purpose of two-factor authentication (2FA)?",
+            A:"To make a computer run twice as fast",
+            B:"To provide an additional layer of account security",
+            C:"To increase storage capacity",
+            D:"To remove computer viruses",
+            answer:"B"
+        },
+
+        {
+            examIndex:0,
+            question:"What does LAN stand for?",
+            A:"Local Area Network",
+            B:"Large Access Network",
+            C:"Local Access Node",
+            D:"Linked Area Node",
+            answer:"A"
+        },
+
+        {
+            examIndex:0,
+            question:"Which technology is commonly used to store files permanently in modern computers?",
+            A:"RAM",
+            B:"CPU",
+            C:"SSD",
+            D:"Cache",
+            answer:"C"
+        },
+
+        {
+            examIndex:0,
+            question:"What is version control mainly used for?",
+            A:"Tracking changes made to files and source code",
+            B:"Increasing internet speed",
+            C:"Protecting a monitor from damage",
+            D:"Formatting a computer",
+            answer:"A"
+        },
+
+        {
+            examIndex:0,
+            question:"Which of the following is an example of cybersecurity practice?",
+            A:"Sharing your password with friends",
+            B:"Using the same password everywhere",
+            C:"Keeping software and security updates current",
+            D:"Clicking unknown links",
+            answer:"C"
+        }
+
+    );
+
+}
+
+
+/* ========================================================= */
+/* ROLE */
+/* ========================================================= */
+
+function selectRole(role){
+
+    currentRole=role;
+
+    const studentButton=document.getElementById("studentRoleBtn");
+
+    const adminButton=document.getElementById("adminRoleBtn");
+
+    const studentLogin=document.getElementById("studentLogin");
+
+    const adminLogin=document.getElementById("adminLogin");
+
+
+    if(role==="Student"){
+
+        studentButton.classList.add("active");
+
+        adminButton.classList.remove("active");
+
+        studentLogin.style.display="block";
+
+        adminLogin.style.display="none";
+
+    }else{
+
+        adminButton.classList.add("active");
+
+        studentButton.classList.remove("active");
+
+        studentLogin.style.display="none";
+
+        adminLogin.style.display="block";
+
+    }
+
+}
+
+
+/* ========================================================= */
+/* LOGIN */
+/* ========================================================= */
+
+function login(){
+
+    if(currentRole==="Student"){
+
+        const studentID=document.getElementById("studentID").value.trim();
+
+        const studentName=document.getElementById("studentName").value.trim();
+
+        const course=document.getElementById("studentCourse").value;
+
+        const year=document.getElementById("studentYear").value;
+
+
+        if(!studentID||!studentName||!course||!year){
+
+            alert("Please complete all student information.");
+
+            return;
+
+        }
+
+
+        currentStudent={
+
+            id:studentID,
+
+            name:studentName,
+
+            course:course,
+
+            year:year
+
+        };
+
+
+        document.getElementById("loggedUser").textContent=studentName;
+
+        document.getElementById("userAvatar").textContent=
+            studentName.charAt(0).toUpperCase();
+
+        document.getElementById("studentWelcomeName").textContent=
+            studentName;
+
+        document.getElementById("infoStudentID").textContent=
+            studentID;
+
+        document.getElementById("infoStudentName").textContent=
+            studentName;
+
+        document.getElementById("infoStudentCourse").textContent=
+            course;
+
+        document.getElementById("infoStudentYear").textContent=
+            year;
+
+        document.getElementById("dashboardStudentYear").textContent=
+            year;
+
+        document.getElementById("scheduleYearLabel").textContent=
+            year;
+
+
+        document.getElementById("loginPage").style.display="none";
+
+        document.getElementById("system").style.display="block";
+
+        document.getElementById("studentMenu").style.display="block";
+
+        document.getElementById("adminMenu").style.display="none";
+
+
+        updateStudentPages();
+
+        showPage("studentDashboard");
+
+    }else{
+
+        const adminName=document.getElementById("adminName").value.trim();
+
+
+        if(!adminName){
+
+            alert("Please enter Admin Name.");
+
+            return;
+
+        }
+
+
+        document.getElementById("loggedUser").textContent=adminName;
+
+        document.getElementById("userAvatar").textContent=
+            adminName.charAt(0).toUpperCase();
+
+
+        document.getElementById("loginPage").style.display="none";
+
+        document.getElementById("system").style.display="block";
+
+        document.getElementById("adminMenu").style.display="block";
+
+        document.getElementById("studentMenu").style.display="none";
+
+
+        renderExamDropdown();
+
+        updateAdminDashboard();
+
+        renderMonitor();
+
+        renderLeaderboard();
+
+        renderReports();
+
+        showPage("adminDashboard");
+
+    }
+
+}
+
+
+/* ========================================================= */
+/* ADMIN SUBJECTS */
+/* ========================================================= */
+
+function updateAdminSubjects(){
+
+    const year=document.getElementById("examYear").value;
+
+    const subject=document.getElementById("examSubject");
+
+
+    subject.innerHTML="";
+
+
+    if(!year){
+
+        subject.innerHTML=
+            `<option value="">Select Year Level First</option>`;
+
+        return;
+
+    }
+
+
+    subject.innerHTML=
+        `<option value="">Select Subject</option>`;
+
+
+    (yearSubjects[year]||[]).forEach(function(item){
+
+        const option=document.createElement("option");
+
+        option.value=item;
+
+        option.textContent=item;
+
+        subject.appendChild(option);
+
+    });
+
+}
+
+
+/* ========================================================= */
+/* DATE AND TIME HELPERS */
+/* ========================================================= */
+
+function getDayName(dateString){
+
+    if(!dateString){
+        return "Not Set";
+    }
+
+    const date=new Date(dateString+"T00:00:00");
+
+    return date.toLocaleDateString("en-US",{
+        weekday:"long"
+    });
+
+}
+
+
+function formatDate(dateString){
+
+    if(!dateString){
+        return "Not Set";
+    }
+
+    const date=new Date(dateString+"T00:00:00");
+
+    return date.toLocaleDateString("en-US",{
+        month:"short",
+        day:"numeric",
+        year:"numeric"
+    });
+
+}
+
+
+function formatTime(timeString){
+
+    if(!timeString){
+        return "Not Set";
+    }
+
+    const parts=timeString.split(":");
+
+    let hour=Number(parts[0]);
+
+    const minute=parts[1];
+
+    const suffix=hour>=12?"PM":"AM";
+
+    hour=hour%12;
+
+    if(hour===0){
+        hour=12;
+    }
+
+    return hour+":"+minute+" "+suffix;
+
+}
+
+
+/* ========================================================= */
+/* EXAM SCHEDULE STATUS */
+/* ========================================================= */
+
+function getExamScheduleStatus(exam){
+
+    if(exam.adminOpened===true){
+        return "ADMIN OPENED";
+    }
+
+
+    if(!exam.examDate||
+       !exam.startTime||
+       !exam.endTime){
+
+        return "SCHEDULED";
+
+    }
+
+
+    const now=new Date();
+
+    const start=new Date(
+        exam.examDate+"T"+exam.startTime
+    );
+
+    const end=new Date(
+        exam.examDate+"T"+exam.endTime
+    );
+
+
+    if(now<start){
+        return "SCHEDULED";
+    }
+
+
+    if(now>=start&&now<=end){
+        return "OPEN NOW";
+    }
+
+
+    return "CLOSED";
+
+}
+
+
+/* ========================================================= */
+/* STATUS HTML */
+/* ========================================================= */
+
+function getStatusHtml(status){
+
+    if(status==="OPEN NOW"){
+
+        return `<span class="status green">OPEN NOW</span>`;
+
+    }
+
+    if(status==="ADMIN OPENED"){
+
+        return `<span class="status blue">ADMIN OPENED</span>`;
+
+    }
+
+    if(status==="SCHEDULED"){
+
+        return `<span class="status yellow">SCHEDULED</span>`;
+
+    }
+
+    return `<span class="status red">CLOSED</span>`;
+
+}
+
+
+/* ========================================================= */
+/* CREATE EXAM */
+/* ========================================================= */
+
+function createExam(){
+
+    const title=document.getElementById("examTitle").value.trim();
+
+    const year=document.getElementById("examYear").value;
+
+    const subject=document.getElementById("examSubject").value;
+
+    const duration=document.getElementById("examDuration").value;
+
+    const passingScore=document.getElementById("passingScore").value;
+
+    const items=document.getElementById("numberOfItems").value;
+
+    const examDate=document.getElementById("examDate").value;
+
+    const startTime=document.getElementById("examStartTime").value;
+
+    const endTime=document.getElementById("examEndTime").value;
+
+
+    if(!title||
+       !year||
+       !subject||
+       !duration||
+       passingScore===""||
+       !items||
+       !examDate||
+       !startTime||
+       !endTime){
+
+        alert("Please complete all examination details including the schedule.");
+
+        return;
+
+    }
+
+
+    if(Number(passingScore)>Number(items)){
+
+        alert(
+            "Passing score cannot be higher than the number of items."
+        );
+
+        return;
+
+    }
+
+
+    const start=new Date(
+        examDate+"T"+startTime
+    );
+
+    const end=new Date(
+        examDate+"T"+endTime
+    );
+
+
+    if(end<=start){
+
+        alert("End Time must be later than Start Time.");
+
+        return;
+
+    }
+
+
+    exams.push({
+
+        title:title,
+
+        year:year,
+
+        subject:subject,
+
+        duration:Number(duration),
+
+        passingScore:Number(passingScore),
+
+        items:Number(items),
+
+        status:"ACTIVE",
+
+        examDate:examDate,
+
+        startTime:startTime,
+
+        endTime:endTime,
+
+        adminOpened:false
+
+    });
+
+
+    document.getElementById("examTitle").value="";
+
+    document.getElementById("examYear").value="";
+
+    document.getElementById("examSubject").innerHTML=
+        `<option value="">Select Year Level First</option>`;
+
+    document.getElementById("examDuration").value="";
+
+    document.getElementById("passingScore").value="";
+
+    document.getElementById("numberOfItems").value="";
+
+    document.getElementById("examDate").value="";
+
+    document.getElementById("examStartTime").value="";
+
+    document.getElementById("examEndTime").value="";
+
+
+    renderExams();
+
+    renderExamDropdown();
+
+    updateAdminDashboard();
+
+    updateStudentPages();
+
+
+    alert("Examination created successfully!");
+
+}
+
+
+/* ========================================================= */
+/* ADMIN OPEN / CLOSE EXAM */
+/* ========================================================= */
+
+function toggleAdminExam(index){
+
+    const exam=exams[index];
+
+    if(!exam){
+        return;
+    }
+
+
+    if(exam.adminOpened===true){
+
+        exam.adminOpened=false;
+
+        alert(
+            "Admin override removed. The examination will now follow its scheduled date and time."
+        );
+
+    }else{
+
+        exam.adminOpened=true;
+
+        alert(
+            "Examination opened by administrator. Students may now access it even if the scheduled time has ended."
+        );
+
+    }
+
+
+    renderExams();
+
+    updateAdminDashboard();
+
+    updateStudentPages();
+
+}
+
+
+/* ========================================================= */
+/* RENDER EXAMS */
+/* ========================================================= */
+
+function renderExams(){
+
+    const tbody=document.getElementById("examTableBody");
+
+    if(!tbody){
+        return;
+    }
+
+
+    if(exams.length===0){
+
+        tbody.innerHTML=`
+
+            <tr>
+
+                <td colspan="12">
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">📝</div>
+
+                        <p>No examinations created yet.</p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML=exams.map(function(exam,index){
+
+        const scheduleStatus=getExamScheduleStatus(exam);
+
+
+        let actionButton="";
+
+
+        if(exam.adminOpened===true){
+
+            actionButton=`
+
+                <button
+                    class="btn btn-warning"
+                    style="padding:7px 10px;"
+                    onclick="toggleAdminExam(${index})">
+
+                    CLOSE EXAM
+
+                </button>
+
+            `;
+
+        }else{
+
+            actionButton=`
+
+                <button
+                    class="btn btn-success"
+                    style="padding:7px 10px;"
+                    onclick="toggleAdminExam(${index})">
+
+                    OPEN EXAM
+
+                </button>
+
+            `;
+
+        }
+
+
+        return`
+
+            <tr>
+
+                <td>${index+1}</td>
+
+                <td>
+                    <strong>
+                        ${escapeHtml(exam.title)}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeHtml(exam.year)}
+                </td>
+
+                <td>
+                    ${escapeHtml(exam.subject)}
+                </td>
+
+                <td>
+                    ${formatDate(exam.examDate)}
+                </td>
+
+                <td>
+                    ${getDayName(exam.examDate)}
+                </td>
+
+                <td>
+                    ${formatTime(exam.startTime)}
+                    -
+                    ${formatTime(exam.endTime)}
+                </td>
+
+                <td>
+                    ${exam.duration} Minutes
+                </td>
+
+                <td>
+                    ${exam.items}
+                </td>
+
+                <td>
+                    ${exam.passingScore}
+                </td>
+
+                <td>
+                    ${getStatusHtml(scheduleStatus)}
+                </td>
+
+                <td>
+
+                    <div style="
+                        display:flex;
+                        gap:5px;
+                        flex-wrap:wrap;
+                    ">
+
+                        ${actionButton}
+
+                        <button
+                            class="btn btn-danger"
+                            style="padding:7px 10px;"
+                            onclick="deleteExam(${index})">
+
+                            🗑️
+
+                        </button>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* ========================================================= */
+/* DELETE EXAM */
+/* ========================================================= */
+
+function deleteExam(index){
+
+    if(!confirm("Delete this examination?")){
+        return;
+    }
+
+
+    exams.splice(index,1);
+
+
+    questions=questions.filter(function(question){
+
+        return question.examIndex!==index;
+
+    });
+
+
+    questions.forEach(function(question){
+
+        if(question.examIndex>index){
+            question.examIndex--;
+        }
+
+    });
+
+
+    renderExams();
+
+    renderQuestions();
+
+    renderExamDropdown();
+
+    updateAdminDashboard();
+
+    updateStudentPages();
+
+}
+
+
+/* ========================================================= */
+/* EXAM DROPDOWN */
+/* ========================================================= */
+
+function renderExamDropdown(){
+
+    const select=document.getElementById("questionExam");
+
+    if(!select){
+        return;
+    }
+
+
+    select.innerHTML=
+        `<option value="">Select Examination</option>`;
+
+
+    exams.forEach(function(exam,index){
+
+        const option=document.createElement("option");
+
+        option.value=index;
+
+        option.textContent=
+            exam.title+
+            " - "+
+            exam.subject+
+            " - "+
+            exam.year;
+
+        select.appendChild(option);
+
+    });
+
+
+    showQuestionCount();
+
+}
+
+
+/* ========================================================= */
+/* SHOW QUESTION COUNT */
+/* ========================================================= */
+
+function showQuestionCount(){
+
+    const select=document.getElementById("questionExam");
+
+    const display=document.getElementById("questionCountDisplay");
+
+
+    if(!select||!display){
+        return;
+    }
+
+
+    if(select.value===""){
+
+        display.value="0 / 0";
+
+        return;
+
+    }
+
+
+    const index=Number(select.value);
+
+    const exam=exams[index];
+
+
+    if(!exam){
+
+        display.value="0 / 0";
+
+        return;
+
+    }
+
+
+    display.value=
+        countQuestions(index)+
+        " / "+
+        exam.items;
+
+}
+
+
+/* ========================================================= */
+/* SAVE QUESTION */
+/* ========================================================= */
+
+function saveQuestion(){
+
+    const examIndex=document.getElementById("questionExam").value;
+
+    const question=document.getElementById("questionText").value.trim();
+
+    const A=document.getElementById("choiceA").value.trim();
+
+    const B=document.getElementById("choiceB").value.trim();
+
+    const C=document.getElementById("choiceC").value.trim();
+
+    const D=document.getElementById("choiceD").value.trim();
+
+    const answer=document.getElementById("correctAnswer").value;
+
+
+    if(examIndex===""||
+       !question||
+       !A||
+       !B||
+       !C||
+       !D||
+       !answer){
+
+        alert("Please complete all question details.");
+
+        return;
+
+    }
+
+
+    const exam=exams[Number(examIndex)];
+
+
+    if(!exam){
+
+        alert("Please select a valid examination.");
+
+        return;
+
+    }
+
+
+    if(countQuestions(Number(examIndex))>=exam.items){
+
+        alert(
+            "You have already reached the number of items for this examination."
+        );
+
+        return;
+
+    }
+
+
+    questions.push({
+
+        examIndex:Number(examIndex),
+
+        question:question,
+
+        A:A,
+
+        B:B,
+
+        C:C,
+
+        D:D,
+
+        answer:answer
+
+    });
+
+
+    clearQuestionForm();
+
+    renderQuestions();
+
+    showQuestionCount();
+
+    updateStudentPages();
+
+
+    alert("Question added successfully!");
+
+}
+
+
+/* ========================================================= */
+/* RENDER QUESTIONS */
+/* ========================================================= */
+
+function renderQuestions(){
+
+    const tbody=document.getElementById("questionTableBody");
+
+    if(!tbody){
+        return;
+    }
+
+
+    if(questions.length===0){
+
+        tbody.innerHTML=`
+
+            <tr>
+
+                <td colspan="5">
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">❓</div>
+
+                        <p>No questions added yet.</p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML=questions.map(function(item,index){
+
+        const exam=exams[item.examIndex];
+
+
+        return`
+
+            <tr>
+
+                <td>${index+1}</td>
+
+                <td>
+
+                    ${
+                        exam
+                        ?escapeHtml(exam.title)
+                        :"Deleted Exam"
+                    }
+
+                    <br>
+
+                    <small>
+
+                        ${
+                            exam
+                            ?escapeHtml(exam.subject)
+                            :""
+                        }
+
+                    </small>
+
+                </td>
+
+                <td>
+                    ${escapeHtml(item.question)}
+                </td>
+
+                <td>
+                    ${item.answer}
+                </td>
+
+                <td>
+
+                    <button
+                        class="btn btn-danger"
+                        style="padding:7px 10px;"
+                        onclick="deleteQuestion(${index})">
+
+                        🗑️
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* ========================================================= */
+/* DELETE QUESTION */
+/* ========================================================= */
+
+function deleteQuestion(index){
+
+    if(confirm("Delete this question?")){
+
+        questions.splice(index,1);
+
+        renderQuestions();
+
+        showQuestionCount();
+
+        updateStudentPages();
+
+    }
+
+}
+
+
+/* ========================================================= */
+/* CLEAR QUESTION */
+/* ========================================================= */
+
+function clearQuestionForm(){
+
+    document.getElementById("questionText").value="";
+
+    document.getElementById("choiceA").value="";
+
+    document.getElementById("choiceB").value="";
+
+    document.getElementById("choiceC").value="";
+
+    document.getElementById("choiceD").value="";
+
+    document.getElementById("correctAnswer").value="";
+
+}
+
+
+/* ========================================================= */
+/* COUNT QUESTIONS */
+/* ========================================================= */
+
+function countQuestions(examIndex){
+
+    return questions.filter(function(q){
+
+        return q.examIndex===examIndex;
+
+    }).length;
+
+}
+
+
+/* ========================================================= */
+/* STUDENT EXAMS */
+/* ========================================================= */
+
+function getStudentExams(){
+
+    if(!currentStudent.year){
+        return [];
+    }
+
+
+    return exams.filter(function(exam){
+
+        return exam.year===currentStudent.year&&
+               exam.status==="ACTIVE";
+
+    });
+
+}
+
+
+/* ========================================================= */
+/* CHECK COMPLETED */
+/* ========================================================= */
+
+function hasStudentCompletedExam(examIndex){
+
+    const exam=exams[examIndex];
+
+
+    if(!exam){
+        return false;
+    }
+
+
+    return results.some(function(result){
+
+        return result.studentID===currentStudent.id&&
+               result.examTitle===exam.title&&
+               result.subject===exam.subject;
+
+    });
+
+}
+
+
+/* ========================================================= */
+/* UPDATE STUDENT PAGES */
+/* ========================================================= */
+
+function updateStudentPages(){
+
+    if(!currentStudent.year){
+        return;
+    }
+
+
+    const available=getStudentExams();
+
+
+    const unfinished=available.filter(function(exam){
+
+        const index=exams.indexOf(exam);
+
+        return !hasStudentCompletedExam(index);
+
+    });
+
+
+    const studentResults=results.filter(function(result){
+
+        return result.studentID===currentStudent.id;
+
+    });
+
+
+    const ongoing=unfinished.filter(function(exam){
+
+        const status=getExamScheduleStatus(exam);
+
+        return status==="OPEN NOW"||
+               status==="ADMIN OPENED";
+
+    });
+
+
+    const upcoming=unfinished.filter(function(exam){
+
+        return getExamScheduleStatus(exam)==="SCHEDULED";
+
+    });
+
+
+    document.getElementById("studentOngoingCount").textContent=
+        ongoing.length;
+
+
+    document.getElementById("studentCompletedCount").textContent=
+        studentResults.length;
+
+
+    document.getElementById("studentResultCount").textContent=
+        studentResults.length;
+
+
+    document.getElementById("studentUpcomingCount").textContent=
+        upcoming.length;
+
+
+    renderStudentDashboardExams();
+
+    renderOngoingExam();
+
+    renderCompletedExams();
+
+    renderStudentResults();
+
+    renderSchedule();
+
+}
+
+
+/* ========================================================= */
+/* STUDENT DASHBOARD EXAMS */
+/* ========================================================= */
+
+function renderStudentDashboardExams(){
+
+    const container=document.getElementById(
+        "studentDashboardExams"
+    );
+
+
+    if(!container||!currentStudent.year){
+        return;
+    }
+
+
+    const available=getStudentExams().filter(function(exam){
+
+        const index=exams.indexOf(exam);
+
+        return !hasStudentCompletedExam(index);
+
+    });
+
+
+    if(available.length===0){
+
+        container.innerHTML=`
+
+            <div class="empty-state">
+
+                <div class="empty-icon">📝</div>
+
+                <p>
+                    No examination available for
+                    ${escapeHtml(currentStudent.year)}
+                    yet.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML=available.map(function(exam){
+
+        const index=exams.indexOf(exam);
+
+        const questionCount=countQuestions(index);
+
+        const scheduleStatus=getExamScheduleStatus(exam);
+
+        const canOpen=
+            questionCount>=exam.items&&
+            (
+                scheduleStatus==="OPEN NOW"||
+                scheduleStatus==="ADMIN OPENED"
+            );
+
+
+        let button;
+
+
+        if(questionCount<exam.items){
+
+            button=`
+                <span class="status yellow">
+                    WAITING FOR QUESTIONS
+                </span>
+            `;
+
+        }else if(scheduleStatus==="SCHEDULED"){
+
+            button=`
+                <span class="status yellow">
+                    NOT YET OPEN
+                </span>
+            `;
+
+        }else if(scheduleStatus==="CLOSED"){
+
+            button=`
+                <span class="status red">
+                    EXAM CLOSED
+                </span>
+            `;
+
+        }else if(canOpen){
+
+            button=`
+                <button
+                    class="btn"
+                    onclick="openExam(${index})">
+                    TAKE EXAM
+                </button>
+            `;
+
+        }
+
+
+        return`
+
+            <div class="exam-card">
+
+                <h2>
+                    ${escapeHtml(exam.title)}
+                </h2>
+
+                <p>
+                    Subject:
+                    <strong>
+                        ${escapeHtml(exam.subject)}
+                    </strong>
+                </p>
+
+                <p style="margin-top:5px;">
+                    Year:
+                    <strong>
+                        ${escapeHtml(exam.year)}
+                    </strong>
+                </p>
+
+                <div class="exam-info-grid">
+
+                    <div class="exam-info">
+                        <span>Exam Date</span>
+                        <strong>
+                            ${formatDate(exam.examDate)}
+                        </strong>
+                    </div>
+
+                    <div class="exam-info">
+                        <span>Exam Day</span>
+                        <strong>
+                            ${getDayName(exam.examDate)}
+                        </strong>
+                    </div>
+
+                    <div class="exam-info">
+                        <span>Exam Time</span>
+                        <strong>
+                            ${formatTime(exam.startTime)}
+                            -
+                            ${formatTime(exam.endTime)}
+                        </strong>
+                    </div>
+
+                    <div class="exam-info">
+                        <span>Status</span>
+                        ${getStatusHtml(scheduleStatus)}
+                    </div>
+
+                </div>
+
+                <div class="exam-info-grid">
+
+                    <div class="exam-info">
+                        <span>Duration</span>
+                        <strong>
+                            ${exam.duration} Minutes
+                        </strong>
+                    </div>
+
+                    <div class="exam-info">
+                        <span>Number of Items</span>
+                        <strong>
+                            ${exam.items} Items
+                        </strong>
+                    </div>
+
+                    <div class="exam-info">
+                        <span>Passing Score</span>
+                        <strong>
+                            ${exam.passingScore}
+                        </strong>
+                    </div>
+
+                    <div class="exam-info">
+                        <span>Questions Added</span>
+                        <strong>
+                            ${questionCount} / ${exam.items}
+                        </strong>
+                    </div>
+
+                </div>
+
+                ${button}
+
+            </div>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* ========================================================= */
+/* ONGOING EXAM */
+/* ========================================================= */
+
+function renderOngoingExam(){
+
+    const container=document.getElementById(
+        "ongoingExamContainer"
+    );
+
+
+    if(!container||!currentStudent.year){
+        return;
+    }
+
+
+    const available=getStudentExams().filter(function(exam){
+
+        const index=exams.indexOf(exam);
+
+        if(hasStudentCompletedExam(index)){
+            return false;
+        }
+
+        const status=getExamScheduleStatus(exam);
+
+        return status==="OPEN NOW"||
+               status==="ADMIN OPENED";
+
+    });
+
+
+    if(available.length===0){
+
+        container.innerHTML=`
+
+            <div class="content-box">
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">📝</div>
+
+                    <p>
+                        No ongoing examination for
+                        ${escapeHtml(currentStudent.year)}
+                        at this time.
+                    </p>
+
+                    <p style="margin-top:8px;">
+                        Check the
+                        <strong>Exam Schedule</strong>
+                        for upcoming examinations.
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML=available.map(function(exam){
+
+        const index=exams.indexOf(exam);
+
+        const questionCount=countQuestions(index);
+
+
+        return`
+
+            <div class="exam-card">
+
+                <h2>
+                    ${escapeHtml(exam.title)}
+                </h2>
+
+                <p>
+                    Subject:
+                    <strong>
+                        ${escapeHtml(exam.subject)}
+                    </strong>
+                </p>
+
+                <div class="exam-info-grid">
+
+                    <div class="exam-info">
+                        <span>Year Level</span>
+                        <strong>
+                            ${escapeHtml(exam.year)}
+                        </strong>
+                    </div>
+
+                    <div class="exam-info">
+                        <span>Schedule</span>
+                        <strong>
+                            ${formatDate(exam.examDate)}
+                        </strong>
+                    </div>
+
+                    <div class="exam-info">
+                        <span>Time</span>
+                        <strong>
+                            ${formatTime(exam.startTime)}
+                            -
+                            ${formatTime(exam.endTime)}
+                        </strong>
+                    </div>
+
+                    <div class="exam-info">
+                        <span>Questions</span>
+                        <strong>
+                            ${questionCount} / ${exam.items}
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                ${
+                    questionCount>=exam.items
+
+                    ?
+
+                    `<button
+                        class="btn"
+                        onclick="openExam(${index})">
+
+                        START EXAM
+
+                    </button>`
+
+                    :
+
+                    `<span class="status yellow">
+                        WAITING FOR QUESTIONS
+                    </span>`
+
+                }
+
+            </div>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* ========================================================= */
+/* OPEN EXAM */
+/* ========================================================= */
+
+function openExam(index){
+
+    const exam=exams[index];
+
+
+    if(!exam){
+        return;
+    }
+
+
+    if(exam.year!==currentStudent.year){
+
+        alert(
+            "You cannot open an examination assigned to another year level."
+        );
+
+        return;
+
+    }
+
+
+    if(hasStudentCompletedExam(index)){
+
+        alert(
+            "You have already completed this examination."
+        );
+
+        return;
+
+    }
+
+
+    const scheduleStatus=getExamScheduleStatus(exam);
+
+
+    if(
+        scheduleStatus!=="OPEN NOW"&&
+        scheduleStatus!=="ADMIN OPENED"
+    ){
+
+        if(scheduleStatus==="SCHEDULED"){
+
+            alert(
+                "This examination is not open yet.\n\n"+
+                "Date: "+formatDate(exam.examDate)+"\n"+
+                "Day: "+getDayName(exam.examDate)+"\n"+
+                "Time: "+formatTime(exam.startTime)+
+                " - "+
+                formatTime(exam.endTime)
+            );
+
+        }else{
+
+            alert(
+                "This examination is already closed.\n\n"+
+                "Only the administrator can open it again."
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    const examQuestions=questions.filter(function(q){
+
+        return q.examIndex===index;
+
+    });
+
+
+    if(examQuestions.length<exam.items){
+
+        alert(
+            "This examination is not ready yet. The admin still needs to add "+
+            (exam.items-examQuestions.length)+
+            " more question(s)."
+        );
+
+        return;
+
+    }
+
+
+    currentExamIndex=index;
+
+
+    document.getElementById("takeExamTitle").textContent=
+        exam.title;
+
+
+    document.getElementById("takeExamDescription").textContent=
+        exam.subject+
+        " • "+
+        exam.year+
+        " • "+
+        exam.items+
+        " Items";
+
+
+    const container=document.getElementById(
+        "questionsContainer"
+    );
+
+
+    container.innerHTML=examQuestions.map(function(q,number){
+
+        return`
+
+            <div class="question-card">
+
+                <div class="question-number">
+                    Question ${number+1}
+                </div>
+
+                <div class="question-text">
+                    ${escapeHtml(q.question)}
+                </div>
+
+                <label class="choice">
+                    <input
+                        type="radio"
+                        name="question${number}"
+                        value="A">
+                    A. ${escapeHtml(q.A)}
+                </label>
+
+                <label class="choice">
+                    <input
+                        type="radio"
+                        name="question${number}"
+                        value="B">
+                    B. ${escapeHtml(q.B)}
+                </label>
+
+                <label class="choice">
+                    <input
+                        type="radio"
+                        name="question${number}"
+                        value="C">
+                    C. ${escapeHtml(q.C)}
+                </label>
+
+                <label class="choice">
+                    <input
+                        type="radio"
+                        name="question${number}"
+                        value="D">
+                    D. ${escapeHtml(q.D)}
+                </label>
+
+            </div>
+
+        `;
+
+    }).join("");
+
+
+    showPage("takeExamPage");
+
+}
+
+
+/* ========================================================= */
+/* SUBMIT EXAM */
+/* ========================================================= */
+
+function submitExam(){
+
+    if(currentExamIndex===-1){
+        return;
+    }
+
+
+    const exam=exams[currentExamIndex];
+
+
+    if(!exam){
+        return;
+    }
+
+
+    const currentStatus=getExamScheduleStatus(exam);
+
+
+    if(
+        currentStatus!=="OPEN NOW"&&
+        currentStatus!=="ADMIN OPENED"
+    ){
+
+        alert(
+            "The examination is no longer open. Your answers cannot be submitted."
+        );
+
+        currentExamIndex=-1;
+
+        updateStudentPages();
+
+        showPage("ongoingExam");
+
+        return;
+
+    }
+
+
+    const examQuestions=questions.filter(function(q){
+
+        return q.examIndex===currentExamIndex;
+
+    });
+
+
+    let score=0;
+
+
+    for(let i=0;i<examQuestions.length;i++){
+
+        const selected=document.querySelector(
+            `input[name="question${i}"]:checked`
+        );
+
+
+        if(!selected){
+
+            alert(
+                "Please answer all questions before submitting."
+            );
+
+            return;
+
+        }
+
+
+        if(selected.value===examQuestions[i].answer){
+
+            score++;
+
+        }
+
+    }
+
+
+    const percentage=Math.round(
+        (score/examQuestions.length)*100
+    );
+
+
+    const passed=
+        score>=exam.passingScore;
+
+
+    results.push({
+
+        studentID:currentStudent.id,
+
+        studentName:currentStudent.name,
+
+        year:currentStudent.year,
+
+        examTitle:exam.title,
+
+        examType:exam.title,
+
+        subject:exam.subject,
+
+        score:score,
+
+        total:examQuestions.length,
+
+        percentage:percentage,
+
+        remarks:passed?"PASSED":"FAILED",
+
+        date:new Date().toLocaleString()
+
+    });
+
+
+    alert(
+        "Exam submitted!\n\n"+
+        "Score: "+
+        score+
+        " / "+
+        examQuestions.length+
+        "\n"+
+        "Percentage: "+
+        percentage+
+        "%\n"+
+        "Remarks: "+
+        (passed?"PASSED":"FAILED")
+    );
+
+
+    currentExamIndex=-1;
+
+
+    updateStudentPages();
+
+    renderReports();
+
+    renderMonitor();
+
+    renderLeaderboard();
+
+
+    showPage("examResults");
+
+}
+
+
+/* ========================================================= */
+/* COMPLETED EXAMS */
+/* ========================================================= */
+
+function renderCompletedExams(){
+
+    const tbody=document.getElementById(
+        "completedExamBody"
+    );
+
+
+    if(!tbody||!currentStudent.id){
+        return;
+    }
+
+
+    const studentResults=results.filter(function(result){
+
+        return result.studentID===currentStudent.id;
+
+    });
+
+
+    if(studentResults.length===0){
+
+        tbody.innerHTML=`
+
+            <tr>
+
+                <td colspan="4">
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">✅</div>
+
+                        <p>
+                            No completed examination yet.
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML=studentResults.map(function(result){
+
+        return`
+
+            <tr>
+
+                <td>
+                    ${escapeHtml(result.examType)}
+                </td>
+
+                <td>
+                    ${escapeHtml(result.subject)}
+                </td>
+
+                <td>
+                    ${result.score} / ${result.total}
+                </td>
+
+                <td>
+
+                    <span class="status ${
+                        result.remarks==="PASSED"
+                        ?"green"
+                        :"red"
+                    }">
+
+                        ${result.remarks}
+
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* ========================================================= */
+/* STUDENT RESULTS */
+/* ========================================================= */
+
+function renderStudentResults(){
+
+    const tbody=document.getElementById(
+        "studentResultBody"
+    );
+
+
+    if(!tbody||!currentStudent.id){
+        return;
+    }
+
+
+    const studentResults=results.filter(function(result){
+
+        return result.studentID===currentStudent.id;
+
+    });
+
+
+    document.getElementById("studentResultCount").textContent=
+        studentResults.length;
+
+
+    if(studentResults.length===0){
+
+        tbody.innerHTML=`
+
+            <tr>
+
+                <td colspan="5">
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">📊</div>
+
+                        <p>
+                            No examination result yet.
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML=studentResults.map(function(result){
+
+        return`
+
+            <tr>
+
+                <td>
+                    ${escapeHtml(result.examType)}
+                </td>
+
+                <td>
+                    ${escapeHtml(result.subject)}
+                </td>
+
+                <td>
+                    ${result.score} / ${result.total}
+                </td>
+
+                <td>
+                    ${result.percentage}%
+                </td>
+
+                <td>
+
+                    <span class="status ${
+                        result.remarks==="PASSED"
+                        ?"green"
+                        :"red"
+                    }">
+
+                        ${result.remarks}
+
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* ========================================================= */
+/* SCHEDULE */
+/* ========================================================= */
+
+function renderSchedule(){
+
+    const tbody=document.getElementById(
+        "scheduleTableBody"
+    );
+
+
+    if(!tbody||!currentStudent.year){
+        return;
+    }
+
+
+    /*
+        IMPORTANT:
+        Only exams with the SAME year as the logged-in
+        student are shown here.
+    */
+
+    const studentExams=exams.filter(function(exam){
+
+        return exam.year===currentStudent.year;
+
+    });
+
+
+    document.getElementById("scheduleDescription").textContent=
+        currentStudent.year+
+        " BSIT Examination Schedule";
+
+
+    document.getElementById("scheduleYearLabel").textContent=
+        currentStudent.year;
+
+
+    if(studentExams.length===0){
+
+        tbody.innerHTML=`
+
+            <tr>
+
+                <td colspan="8">
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">📅</div>
+
+                        <p>
+                            No examination schedule available for
+                            ${escapeHtml(currentStudent.year)}.
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML=studentExams.map(function(exam){
+
+        const status=getExamScheduleStatus(exam);
+
+
+        return`
+
+            <tr>
+
+                <td>
+
+                    <strong>
+                        ${escapeHtml(exam.title)}
+                    </strong>
+
+                </td>
+
+                <td>
+                    ${escapeHtml(exam.subject)}
+                </td>
+
+                <td>
+                    ${escapeHtml(exam.year)}
+                </td>
+
+                <td>
+                    ${formatDate(exam.examDate)}
+                </td>
+
+                <td>
+                    ${getDayName(exam.examDate)}
+                </td>
+
+                <td>
+                    ${formatTime(exam.startTime)}
+                </td>
+
+                <td>
+                    ${formatTime(exam.endTime)}
+                </td>
+
+                <td>
+                    ${getStatusHtml(status)}
+                </td>
+
+            </tr>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* ========================================================= */
+/* REPORTS */
+/* ========================================================= */
+
+function renderReports(){
+
+    const tbody=document.getElementById(
+        "reportsTableBody"
+    );
+
+
+    if(!tbody){
+        return;
+    }
+
+
+    if(results.length===0){
+
+        tbody.innerHTML=`
+
+            <tr>
+
+                <td colspan="6">
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">📈</div>
+
+                        <p>
+                            No examination reports yet.
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML=results.map(function(result){
+
+        return`
+
+            <tr>
+
+                <td>
+                    <strong>
+                        ${escapeHtml(result.studentName)}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeHtml(result.examType)}
+                </td>
+
+                <td>
+                    ${escapeHtml(result.subject)}
+                </td>
+
+                <td>
+                    ${result.score} / ${result.total}
+                </td>
+
+                <td>
+                    ${result.percentage}%
+                </td>
+
+                <td>
+
+                    <span class="status ${
+                        result.remarks==="PASSED"
+                        ?"green"
+                        :"red"
+                    }">
+
+                        ${result.remarks}
+
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* ========================================================= */
+/* MONITOR */
+/* ========================================================= */
+
+function renderMonitor(){
+
+    const tbody=document.getElementById(
+        "monitorTableBody"
+    );
+
+
+    if(!tbody){
+        return;
+    }
+
+
+    if(results.length===0){
+
+        tbody.innerHTML=`
+
+            <tr>
+
+                <td colspan="8">
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">📺</div>
+
+                        <p>
+                            No student examination data available yet.
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML=results.map(function(result){
+
+        return`
+
+            <tr>
+
+                <td>
+                    <strong>
+                        ${escapeHtml(result.studentName)}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeHtml(result.studentID)}
+                </td>
+
+                <td>
+                    ${escapeHtml(result.year)}
+                </td>
+
+                <td>
+                    ${escapeHtml(result.examType)}
+                </td>
+
+                <td>
+                    ${escapeHtml(result.subject)}
+                </td>
+
+                <td>
+                    ${result.score} / ${result.total}
+                </td>
+
+                <td>
+                    ${result.percentage}%
+                </td>
+
+                <td>
+
+                    <span class="status ${
+                        result.remarks==="PASSED"
+                        ?"green"
+                        :"red"
+                    }">
+
+                        ${result.remarks}
+
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* ========================================================= */
+/* LEADERBOARD */
+/* ========================================================= */
+
+function renderLeaderboard(){
+
+    const table=document.getElementById(
+        "leaderboardTableBody"
+    );
+
+
+    if(!table){
+        return;
+    }
+
+
+    const sortedResults=[...results].sort(function(a,b){
+
+        return b.percentage-a.percentage;
+
+    });
+
+
+    const topCards=[
+
+        document.getElementById("topStudent1"),
+
+        document.getElementById("topStudent2"),
+
+        document.getElementById("topStudent3")
+
+    ];
+
+
+    topCards.forEach(function(card,index){
+
+        if(!card){
+            return;
+        }
+
+
+        const result=sortedResults[index];
+
+
+        if(!result){
+
+            card.innerHTML=`
+
+                <div class="rank-number">
+                    #${index+1}
+                </div>
+
+                <div class="student-avatar-large">
+                    —
+                </div>
+
+                <h3>
+                    No Student Yet
+                </h3>
+
+                <p>
+                    — Points
+                </p>
+
+            `;
+
+            return;
+
+        }
+
+
+        card.innerHTML=`
+
+            <div class="rank-number">
+                #${index+1}
+            </div>
+
+            <div class="student-avatar-large">
+
+                ${escapeHtml(
+                    result.studentName.charAt(0).toUpperCase()
+                )}
+
+            </div>
+
+            <h3>
+                ${escapeHtml(result.studentName)}
+            </h3>
+
+            <p>
+                ${result.score} / ${result.total}
+                (${result.percentage}%)
+            </p>
+
+        `;
+
+    });
+
+
+    if(sortedResults.length===0){
+
+        table.innerHTML=`
+
+            <tr>
+
+                <td colspan="4">
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">🏆</div>
+
+                        <p>
+                            No leaderboard data available yet.
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    table.innerHTML=sortedResults.map(function(result,index){
+
+        return`
+
+            <tr>
+
+                <td>
+                    #${index+1}
+                </td>
+
+                <td>
+                    <strong>
+                        ${escapeHtml(result.studentName)}
+                    </strong>
+                </td>
+
+                <td>
+                    ${result.score} / ${result.total}
+                </td>
+
+                <td>
+                    ${result.percentage}%
+                </td>
+
+            </tr>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* ========================================================= */
+/* ADMIN DASHBOARD */
+/* ========================================================= */
+
+function updateAdminDashboard(){
+
+    const totalExams=document.getElementById("totalExams");
+
+    const activeExamCount=document.getElementById(
+        "activeExamCount"
+    );
+
+
+    if(totalExams){
+        totalExams.textContent=exams.length;
+    }
+
+
+    const openExams=exams.filter(function(exam){
+
+        const status=getExamScheduleStatus(exam);
+
+        return status==="OPEN NOW"||
+               status==="ADMIN OPENED";
+
+    });
+
+
+    if(activeExamCount){
+        activeExamCount.textContent=openExams.length;
+    }
+
+
+    const container=document.getElementById(
+        "dashboardActiveExam"
+    );
+
+
+    if(!container){
+        return;
+    }
+
+
+    if(exams.length===0){
+
+        container.innerHTML=`
+
+            <div class="empty-state">
+
+                <div class="empty-icon">📝</div>
+
+                <p>
+                    No examinations created yet.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML=`
+
+        <div style="overflow-x:auto;">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Exam</th>
+                        <th>Year</th>
+                        <th>Subject</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Duration</th>
+                        <th>Items</th>
+                        <th>Questions</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    ${
+                        exams.map(function(exam,index){
+
+                            const status=
+                                getExamScheduleStatus(exam);
+
+                            return`
+
+                                <tr>
+
+                                    <td>
+                                        <strong>
+                                            ${escapeHtml(exam.title)}
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        ${escapeHtml(exam.year)}
+                                    </td>
+
+                                    <td>
+                                        ${escapeHtml(exam.subject)}
+                                    </td>
+
+                                    <td>
+                                        ${formatDate(exam.examDate)}
+                                    </td>
+
+                                    <td>
+                                        ${formatTime(exam.startTime)}
+                                        -
+                                        ${formatTime(exam.endTime)}
+                                    </td>
+
+                                    <td>
+                                        ${exam.duration} Minutes
+                                    </td>
+
+                                    <td>
+                                        ${exam.items}
+                                    </td>
+
+                                    <td>
+                                        ${countQuestions(index)}
+                                        / ${exam.items}
+                                    </td>
+
+                                    <td>
+                                        ${getStatusHtml(status)}
+                                    </td>
+
+                                </tr>
+
+                            `;
+
+                        }).join("")
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ========================================================= */
+/* SHOW PAGE */
+/* ========================================================= */
+
+function showPage(pageID){
+
+    document.querySelectorAll(".page").forEach(function(page){
+
+        page.classList.remove("active");
+
+    });
+
+
+    const page=document.getElementById(pageID);
+
+
+    if(page){
+        page.classList.add("active");
+    }
+
+
+    const titles={
+
+        adminDashboard:"Admin Dashboard",
+
+        usersPage:"Users",
+
+        examsPage:"Exams",
+
+        questionsPage:"Questions",
+
+        monitorPage:"Monitor",
+
+        leaderboardPage:"Leaderboard",
+
+        reportsPage:"Reports",
+
+        studentDashboard:"Student Dashboard",
+
+        ongoingExam:"Ongoing Exam",
+
+        completedExams:"Exam Completed",
+
+        examSchedule:"Exam Schedule",
+
+        examResults:"Exam Result",
+
+        takeExamPage:"Take Examination"
+
+    };
+
+
+    document.getElementById("topbarTitle").textContent=
+        titles[pageID]||"EXAMHUB";
+
+
+    if(pageID==="reportsPage"){
+        renderReports();
+    }
+
+
+    if(pageID==="monitorPage"){
+        renderMonitor();
+    }
+
+
+    if(pageID==="leaderboardPage"){
+        renderLeaderboard();
+    }
+
+
+    if(pageID==="questionsPage"){
+
+        renderQuestions();
+
+        renderExamDropdown();
+
+    }
+
+
+    if(pageID==="examsPage"){
+
+        renderExams();
+
+    }
+
+
+    if(pageID==="ongoingExam"){
+
+        renderOngoingExam();
+
+    }
+
+
+    if(pageID==="completedExams"){
+
+        renderCompletedExams();
+
+    }
+
+
+    if(pageID==="examResults"){
+
+        renderStudentResults();
+
+    }
+
+
+    if(pageID==="examSchedule"){
+
+        renderSchedule();
+
+    }
+
+
+    if(pageID==="studentDashboard"){
+
+        updateStudentPages();
+
+    }
+
+}
+
+
+/* ========================================================= */
+/* ESCAPE HTML */
+/* ========================================================= */
+
+function escapeHtml(text){
+
+    const div=document.createElement("div");
+
+    div.textContent=text;
+
+    return div.innerHTML;
+
+}
+
+
+/* ========================================================= */
+/* AUTO REFRESH SCHEDULE */
+/* ========================================================= */
+
+setInterval(function(){
+
+    if(currentStudent.year){
+
+        updateStudentPages();
+
+    }
+
+
+    if(currentRole==="Admin"){
+
+        renderExams();
+
+        updateAdminDashboard();
+
+    }
+
+},30000);
+
+
+/* ========================================================= */
+/* LOGOUT */
+/* ========================================================= */
+
+function logout(){
+
+    document.getElementById("system").style.display="none";
+
+    document.getElementById("loginPage").style.display="flex";
+
+
+    document.getElementById("studentID").value="";
+
+    document.getElementById("studentName").value="";
+
+    document.getElementById("studentCourse").value="";
+
+    document.getElementById("studentYear").value="";
+
+    document.getElementById("adminName").value="";
+
+
+    currentStudent={};
+
+    currentExamIndex=-1;
+
+
+    selectRole("Student");
+
+}
+
+
+/* ========================================================= */
+/* ENTER KEY */
+/* ========================================================= */
+
+document.getElementById("loginPage").addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key==="Enter"){
+            login();
+        }
+
+    }
+);
+
+
+/* ========================================================= */
+/* INITIALIZE */
+/* ========================================================= */
+
+selectRole("Student");
+
+addTechnologyExam();
+
+renderExams();
+
+renderQuestions();
+
+renderExamDropdown();
+
+renderReports();
+
+renderMonitor();
+
+renderLeaderboard();
+
+updateAdminDashboard();
+
+</script>
+
+</body>
+</html>
+```
